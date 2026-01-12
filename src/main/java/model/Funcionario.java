@@ -15,19 +15,19 @@ public class Funcionario {
     @Column(name = "funcionario_nome", nullable = false)
     private String nome;
 
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal salario;
-
     @Column(nullable = false)
     private String cargo;
+
+    @Column(nullable = false, precision = 11, scale = 2)
+    private BigDecimal salario;
 
     public Funcionario() {
     }
 
-    public Funcionario(String nome, BigDecimal salario, String cargo) {
+    public Funcionario(String nome, String cargo, BigDecimal salario) {
         this.nome = nome;
-        this.salario = salario;
         this.cargo = cargo;
+        this.salario = salario;
     }
 
     public Long getId() {
