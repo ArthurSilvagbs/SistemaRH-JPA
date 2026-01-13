@@ -3,6 +3,7 @@ package dao;
 import jakarta.persistence.EntityManager;
 import model.Funcionario;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class FuncionarioDAOJPA implements FuncionarioDAO {
@@ -37,6 +38,13 @@ public class FuncionarioDAOJPA implements FuncionarioDAO {
     public List<Funcionario> buscarTodos() {
         String jpql = "SELECT f FROM Funcionario f";
         return em.createQuery(jpql, Funcionario.class).getResultList();
+    }
+
+    @Override
+    public BigDecimal obterSalarios() {
+        String jpql = "SELECT SUM(f.salario) FROM Funcionario f";
+        BigDecimal total = em.createQuery(jpql, BigDecimal.class).getSingleResult();
+        return total != null ? total : BigDecimal.ZERO;
     }
 
     public void fechar() {

@@ -61,4 +61,9 @@ public class Funcionario {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d | NOME: %s | CARGO: %s | SALÁRIO: R$ %.2f%n", this.id, this.nome, this.cargo, this.salario);
+    }
 }

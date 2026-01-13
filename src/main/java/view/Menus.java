@@ -5,6 +5,7 @@ import model.Funcionario;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Menus {
@@ -26,11 +27,10 @@ public class Menus {
             System.out.print("""
                 |\s\s         [ 1 ] - CONTRATAR FUNCIONÁRIO           \s\s|
                 |\s\s         [ 2 ] - VER LISTA DE FUNCIONÁRIOS       \s\s|
-                |\s\s         [ 3 ] - REAJUSTAR SALÁRIO               \s\s|
-                |\s\s         [ 4 ] - PROMOVER FUNCIONÁRIO            \s\s|
-                |\s\s         [ 5 ] - FOLHA DE PAGAMENTO              \s\s|
-                |\s\s         [ 6 ] - DEMITIR FUNCIONÁRIO             \s\s|
-                |\s\s         [ 7 ] - SAIR DO PROGRAMA                \s\s|
+                |\s\s         [ 3 ] - ATUALIZAR DADOS DO FUNCIONÁRIO  \s\s|
+                |\s\s         [ 4 ] - FOLHA DE PAGAMENTO              \s\s|
+                |\s\s         [ 5 ] - DEMITIR FUNCIONÁRIO             \s\s|
+                |\s\s         [ 6 ] - SAIR DO PROGRAMA                \s\s|
                 
                 Selecione um opção:\s""");
             int opcao = lerInteiro();
@@ -38,11 +38,10 @@ public class Menus {
             switch (opcao) {
                 case 1 -> exibirMenuContratacao();
                 case 2 -> exibirMenuListarFuncionarios();
-                //case 3 -> exibirMenuAtualizarSalario();
-                //case 4 -> exibirMenuPromocaoDeCargo();
-                case 5 -> exibirMenuFolhaDePagamento();
-                case 6 -> exibirMenuDemitirFuncionario();
-                case 7 -> {
+                case 3 -> exibirMenuAtualizarDados();
+                case 4 -> exibirMenuFolhaDePagamento();
+                case 5 -> exibirMenuDemitirFuncionario();
+                case 6 -> {
                     System.out.println("Finalizando o programa. Até logo!");
                     System.exit(0);
                 }
@@ -50,29 +49,6 @@ public class Menus {
             }
 
         }
-    }
-
-    private static int repetirOperacao() {
-        System.out.println("""
-                    REPETIR OPERAÇÃO?
-                    
-                    [ 1 ] SIM
-                    [ 2 ] NÃO
-                    
-                    Selecione uma opção:\s""");
-        return lerInteiro();
-    }
-
-    private static int confirmacaoPesquisa() {
-        System.out.print("""
-                Confirma o resultado da pesquisa?
-                
-                [ 1 ] SIM
-                [ 2 ] NÃO
-                
-                Selecione uma opção:\s""");
-
-        return lerInteiro();
     }
 
     private static void exibirMenuContratacao() {
@@ -123,6 +99,123 @@ public class Menus {
         fc.verListaFuncionarios();
     }
 
+    public static void exibirMenuAtualizarDados() {
+
+        boolean continuar = true;
+
+        do {
+            System.out.println("""
+                \n
+                ======================================================
+                ========== ATUALIZAR DADOS DO FUNCIONÁRIO ============
+                ======================================================
+                *****        Insira os dados necessários         *****
+                ======================================================""");
+
+            System.out.print("ID Funcionário: ");
+            Long id = lerLong();
+            System.out.println(fc.buscarFuncionarioPorId(id));
+
+            int opcaoPesquisa = confirmacaoPesquisa();
+
+            switch (opcaoPesquisa) {
+                case 1:
+
+                    Funcionario funcionarioAtt = fc.buscarFuncionarioPorId(id);
+
+                    System.out.print("""
+                ======================================================
+                *****            Selecione uma opção             *****
+                ======================================================
+                
+                [ 1 ] ATUALIZAR NOME
+                [ 2 ] ATUALIZAR CARGO
+                [ 3 ] ATUALIZAR SALÁRIO
+                
+                Selecione uma opção:\s""");
+
+                    int opcao = lerInteiro();
+
+                    switch (opcao) {
+                        case 1:
+
+                            String nomeAntigo = funcionarioAtt.getNome();
+
+                            try {
+                                System.out.print("Novo nome: ");
+                                String nomeNovo = sc.nextLine();
+                                funcionarioAtt.setNome(nomeNovo);
+
+                                if (!Objects.equals(nomeAntigo, nomeNovo)) {
+                                    fc.atualizarDadosFuncioanrio(funcionarioAtt);
+                                    System.out.println("Nome atualizado com sucesso!");
+                                    System.out.printf("""
+                                            Novos dados do funcionário:
+                                            %s""", funcionarioAtt);
+                                }
+                            } catch (Exception e) {
+                                throw new RuntimeException("Erro inesperado" + e);
+                            }
+                            break;
+
+                        case 2:
+
+                            String cargoAntigo = funcionarioAtt.getCargo();
+
+                            try {
+                                System.out.print("Novo cargo: ");
+                                String cargoNovo = sc.nextLine();
+                                funcionarioAtt.setNome(cargoNovo);
+
+                                if (!Objects.equals(cargoAntigo, cargoNovo)) {
+                                    fc.atualizarDadosFuncioanrio(funcionarioAtt);
+                                    System.out.println("Cargo atualizado com sucesso!");
+                                    System.out.printf("""
+                                            Novos dados do funcionário:
+                                            %s""", funcionarioAtt);
+                                }
+                            } catch (Exception e) {
+                                throw new RuntimeException("Erro inesperado" + e);
+                            }
+                            break;
+
+                        case 3:
+                            BigDecimal salarioAntigo = funcionarioAtt.getSalario();
+
+                            try {
+                                System.out.print("Novo salário: ");
+                                BigDecimal salarioNovo = sc.nextBigDecimal();
+                                funcionarioAtt.setSalario(salarioNovo);
+
+                                if (!Objects.equals(salarioAntigo, salarioNovo)) {
+                                    fc.atualizarDadosFuncioanrio(funcionarioAtt);
+                                    System.out.println("Salárop atualizado com sucesso!");
+                                    System.out.printf("""
+                                            Novos dados do funcionário:
+                                            %s""", funcionarioAtt);
+                                }
+                            } catch (Exception e) {
+                                throw new RuntimeException("Erro inesperado" + e);
+                            }
+                            break;
+
+                        default:
+                            System.out.println("Opção inválida!");
+
+                    }
+                    continuar = false;
+                    break;
+
+                case 2:
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+
+        } while (continuar);
+
+    }
+
     public static void exibirMenuFolhaDePagamento() {
 
         System.out.println("""
@@ -131,7 +224,9 @@ public class Menus {
                 ============== FOLHA DE PAGAMENTO TOTAL ==============
                 ======================================================""");
 
-       // System.out.println("R$ " + fc.getFolhaDePagamento());
+       BigDecimal somaSalarios = fc.obterSomatorioSalarios();
+
+        System.out.printf("|| FOLHA DE PAGAMENTO: R$ %.2f ||", somaSalarios);
 
     }
 
@@ -213,6 +308,29 @@ public class Menus {
             }
             System.out.print("Erro! O campo não pode ficar vazio. Digite novamente: ");
         }
+    }
+
+    private static int repetirOperacao() {
+        System.out.println("""
+                    REPETIR OPERAÇÃO?
+                    
+                    [ 1 ] SIM
+                    [ 2 ] NÃO
+                    
+                    Selecione uma opção:\s""");
+        return lerInteiro();
+    }
+
+    private static int confirmacaoPesquisa() {
+        System.out.print("""
+                Confirma o resultado da pesquisa?
+                
+                [ 1 ] SIM
+                [ 2 ] NÃO
+                
+                Selecione uma opção:\s""");
+
+        return lerInteiro();
     }
 
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import model.Funcionario;
 import util.JPAUtil;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class FuncionarioController {
@@ -88,5 +89,18 @@ public class FuncionarioController {
             dao.fechar();
         }
     }
+
+    public BigDecimal obterSomatorioSalarios() {
+        EntityManager em = JPAUtil.getEntityManager();
+        FuncionarioDAOJPA dao = new FuncionarioDAOJPA(em);
+
+        try{
+            return dao.obterSalarios();
+        } finally {
+            dao.fechar();
+        }
+
+    }
+
 
 }
