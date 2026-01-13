@@ -5,6 +5,7 @@ import model.Funcionario;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -96,7 +97,15 @@ public class Menus {
                 =============== LISTA DE FUNCIONÁRIOS ================
                 ======================================================""");
 
-        fc.verListaFuncionarios();
+        List<Funcionario> lista = fc.verListaFuncionarios();
+
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum funcionário cadastrado.");
+        } else {
+            for (Funcionario f : lista) {
+                System.out.println(f);
+            }
+        }
     }
 
     public static void exibirMenuAtualizarDados() {
@@ -165,7 +174,7 @@ public class Menus {
                             try {
                                 System.out.print("Novo cargo: ");
                                 String cargoNovo = sc.nextLine();
-                                funcionarioAtt.setNome(cargoNovo);
+                                funcionarioAtt.setCargo(cargoNovo);
 
                                 if (!Objects.equals(cargoAntigo, cargoNovo)) {
                                     fc.atualizarDadosFuncioanrio(funcionarioAtt);
@@ -250,6 +259,7 @@ public class Menus {
             switch (opcaoConfirmacao) {
                 case 1:
                     fc.demitirFuncionario(fc.buscarFuncionarioPorId(id));
+                    break;
                 case 2:
                     System.out.println("Operação cancelada! Funcionário incorreto.");
                     return;
